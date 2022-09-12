@@ -19,7 +19,7 @@ class RouteUtils {
 
     final route = settings.name;
     final args = settings.arguments as PageArguments?;
-    LogUtils.debug('$route, ${args?.toJson()}');
+    LogUtils.debug('Route[name=$route, Args=${args?.toJson()}]');
 
     if (route == RouteConstants.index) {
       // Initial route doesn't requires transition

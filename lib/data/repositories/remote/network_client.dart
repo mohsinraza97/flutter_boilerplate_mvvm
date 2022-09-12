@@ -116,7 +116,7 @@ class NetworkClient {
     if (body != null) {
       requestMap['Body'] = body;
     }
-    LogUtils.debug(requestMap);
+    LogUtils.info(requestMap);
   }
 
   void _logResponse(
@@ -136,6 +136,6 @@ class NetworkClient {
     if (exception != null) {
       responseMap['Exception'] = exception.toString();
     }
-    LogUtils.debug(responseMap);
+    LogUtils.info(responseMap);
   }
 }

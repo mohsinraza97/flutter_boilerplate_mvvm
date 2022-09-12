@@ -6,6 +6,7 @@ import '../../enums/request_type.dart';
 import '../../models/network/requests/auth_request.dart';
 import '../../models/network/responses/auth_response.dart';
 import '../../models/network/result.dart';
+import '../base_repository.dart';
 import 'network_client.dart';
 
 abstract class NetworkRepository {
@@ -14,7 +15,7 @@ abstract class NetworkRepository {
   Future<Result<AuthResponse>> login(AuthRequest? request);
 }
 
-class NetworkRepositoryImpl implements NetworkRepository {
+class NetworkRepositoryImpl extends BaseRepositoryImpl implements NetworkRepository {
   @override
   Future<Result<AuthResponse>> register(RegisterRequest? request) async {
     final response = await NetworkClient.instance.request(
