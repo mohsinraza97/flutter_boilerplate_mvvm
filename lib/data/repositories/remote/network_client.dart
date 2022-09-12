@@ -9,7 +9,7 @@ import '../../../util/constants/network_constants.dart';
 import '../../../util/utilities/json_utils.dart';
 import '../../../util/utilities/log_utils.dart';
 import '../../enums/request_type.dart';
-import '../../enums/response_type.dart';
+import '../../enums/response_code.dart';
 
 class NetworkClient {
   const NetworkClient._internal();
@@ -58,27 +58,26 @@ class NetworkClient {
       exception = e;
       response = http.Response(
         AppStrings.errorTimeout,
-        ResponseType.timeout.asInt,
+        ResponseCode.timeout.value,
       );
     } on SocketException catch (e) {
       // Internet unavailable
       exception = e;
       response = http.Response(
         AppStrings.errorInternetUnavailable,
-        ResponseType.internetFailure.asInt,
+        ResponseCode.internetFailure.value,
       );
     } on Exception catch (e) {
       // Unknown
       exception = e;
       response = http.Response(
         AppStrings.errorUnknown,
-        ResponseType.unknown.asInt,
+        ResponseCode.unknown.value,
       );
     }
 
     // Log response
     _logResponse(
-      EnumToString.convertToString(requestType),
       uri,
       response: response,
       exception: exception,
@@ -120,17 +119,14 @@ class NetworkClient {
   }
 
   void _logResponse(
-    String requestType,
     Uri uri, {
     http.Response? response,
     Exception? exception,
   }) {
     final responseMap = <String, dynamic>{};
-    responseMap['Method'] = requestType.toUpperCase();
     responseMap['URL'] = uri.toString();
     responseMap['Response'] = {
-      'status': response?.statusCode,
-      'phrase': response?.reasonPhrase,
+      'status': '${response?.statusCode} - ${response?.reasonPhrase}',
       'body': response?.body,
     };
     if (exception != null) {
