@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/network/requests/auth_request.dart';
 import '../../../data/models/ui/page_arguments.dart';
 import '../../../util/constants/route_constants.dart';
-import '../../../util/utilities/common_utils.dart';
 import '../../../util/utilities/dialog_utils.dart';
 import '../../../util/utilities/navigation_utils.dart';
 import '../../resources/app_strings.dart';

@@ -1,4 +1,5 @@
 import '../../../ui/resources/app_strings.dart';
+import '../../../util/extensions/numeric_ext.dart';
 import '../../../util/utilities/json_utils.dart';
 import '../base_model.dart';
 
@@ -15,17 +16,20 @@ class Result<T> implements BaseModel {
     this.data,
   });
 
-  Result.success(this.data, [this.message]) {
+  Result.success([this.data, this.message]) {
+    code = 200;
     status = true;
   }
 
-  Result.error(this.message, [this.code]) {
+  Result.error([this.message, this.code]) {
     status = false;
   }
 
-  bool get isSuccess => status == true && data != null;
+  bool get isSuccess => (code?.isBetween(200, 299) ?? false) && status == true;
 
-  bool get isError => status == null || status == false;
+  bool get isError => !isSuccess;
+
+  bool get hasData => data != null;
 
   String get errorMessage => message ?? AppStrings.errorGeneral;
 
@@ -35,6 +39,9 @@ class Result<T> implements BaseModel {
     Function(dynamic data) callback,
   ) {
     final json = JsonUtils.fromJson(body);
+    if (json == null) {
+      return Result.error();
+    }
     return Result<T>._internal(
       code: code,
       status: json['success'],

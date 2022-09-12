@@ -6,12 +6,4 @@ class NetworkConstants {
   // Endpoints
   static const String register = 'users';
   static const String login = 'users/login';
-
-  // {
-  //   "success": true,
-  //   "message": null,
-  //   "data": null
-  // }
-  static const String successResponseStart = "{    \"success\":true,    \"message\":null,    \"data\":";
-  static const String successResponseEnd = " }";
 }

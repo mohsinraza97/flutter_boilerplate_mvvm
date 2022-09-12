@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
+
+import '../../data/enums/data_state.dart';
 import '../../data/enums/loading_state.dart';
 
 abstract class BaseViewModel with ChangeNotifier {
-  LoadingState loadingState = LoadingState.loaded;
+  DataState _dataState = DataState.none;
+  LoadingState _loadingState = LoadingState.loaded;
 
-  bool get isLoading => loadingState == LoadingState.loading;
+  DataState get dataState => _dataState;
+
+  set dataState(DataState state) {
+    _dataState = state;
+    notifyListeners();
+  }
+
+  bool get isLoading => _loadingState == LoadingState.loading;
 
   @protected
   void toggleLoading(bool loading) {
     if (loading) {
-      loadingState = LoadingState.loading;
+      _loadingState = LoadingState.loading;
     } else {
-      loadingState = LoadingState.loaded;
+      _loadingState = LoadingState.loaded;
     }
     notifyListeners();
   }
