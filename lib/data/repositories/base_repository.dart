@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 
-import '../../di/injector.dart';
 import '../../util/utilities/internet_utils.dart';
-import 'local/storage_repository.dart';
-import 'remote/network_repository.dart';
+import 'local/storage_client.dart';
 
 abstract class BaseRepository {
   Future<bool> hasInternet();
+
+  Future<String?> getAuthToken();
 }
 
-class BaseRepositoryImpl implements BaseRepository {
-  @protected
-  final networkRepository = injector<NetworkRepository>();
-  @protected
-  final storageRepository = injector<StorageRepository>();
-
+abstract class BaseRepositoryImpl implements BaseRepository {
   @override
   @protected
   Future<bool> hasInternet() async {
     return await InternetUtils.isInternetAvailable();
+  }
+
+  @override
+  @protected
+  Future<String?> getAuthToken() async {
+    return await StorageClient.instance.getAuthToken();
   }
 }

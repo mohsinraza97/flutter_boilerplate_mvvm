@@ -91,10 +91,7 @@ class ProgressDialog extends StatelessWidget {
         child: Text(
           message ?? '',
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 16,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+          style: const TextStyle(fontSize: 16),
         ),
       ),
     );
