@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../util/constants/route_constants.dart';
+import '../../../util/utilities/common_utils.dart';
 import '../../../util/utilities/navigation_utils.dart';
 import '../../resources/app_strings.dart';
 import '../../view_models/auth/auth_view_model.dart';
@@ -73,6 +74,7 @@ class HomePage extends StatelessWidget {
     BuildContext context,
   ) async {
     authVM.logout().then((value) {
+      CommonUtils.showSnackBar(context, 'Logged out!');
       NavigationUtils.clearStack(
         context,
         newRouteName: RouteConstants.auth,

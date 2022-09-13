@@ -14,7 +14,6 @@ class AuthViewModel extends BaseViewModel {
   }
 
   User? _user;
-
   User? get user => _user;
 
   Future<Result<User>> register(RegisterRequest? request) async {
@@ -46,7 +45,9 @@ class AuthViewModel extends BaseViewModel {
   }
 
   Future<void> logout() async {
-    await _updateAuthInfo(null);
+    _user = null;
+    await _repository.logout();
+    notifyListeners();
   }
 
   Future<void> _updateAuthInfo(AuthResponse? response) async {
