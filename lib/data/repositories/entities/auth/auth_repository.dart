@@ -15,6 +15,8 @@ abstract class AuthRepository {
 
   Future<User?> getAuthUser();
 
+  Future<void> logout();
+
   Future<void> updateAuthInfo(AuthResponse? response);
 }
 
@@ -41,6 +43,11 @@ class AuthRepositoryImpl extends BaseRepositoryImpl implements AuthRepository {
   @override
   Future<User?> getAuthUser() async {
     return await _storageRepository.getAuthUser();
+  }
+
+  @override
+  Future<void> logout() async {
+    return await updateAuthInfo(null);
   }
 
   @override

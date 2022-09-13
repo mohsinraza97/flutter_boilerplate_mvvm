@@ -1,14 +1,37 @@
+import 'package:random_string/random_string.dart';
+import 'package:uuid/uuid.dart';
+
 import '../../base_model.dart';
 import '../../entities/user.dart';
+import '../requests/auth_request.dart';
 
 class AuthResponse implements BaseModel {
-  final User? user;
-  final String? token;
+  User? user;
+  String? token;
 
   AuthResponse({
     required this.user,
     required this.token,
   });
+
+  factory AuthResponse.mockRegister(RegisterRequest request) {
+    return AuthResponse(
+      user: User(
+        id: const Uuid().v1(),
+        name: request.name,
+        email: request.email,
+        createdAt: DateTime.now().toUtc(),
+      ),
+      token: randomString(10),
+    );
+  }
+
+  factory AuthResponse.mockLogin(User user) {
+    return AuthResponse(
+      user: user,
+      token: randomString(10),
+    );
+  }
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
     return AuthResponse(
