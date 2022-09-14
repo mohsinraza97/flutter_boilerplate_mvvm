@@ -7,6 +7,7 @@ import '../../../util/constants/route_constants.dart';
 import '../../../util/utilities/dialog_utils.dart';
 import '../../../util/utilities/navigation_utils.dart';
 import '../../resources/app_strings.dart';
+import '../../resources/app_theme.dart';
 import '../../view_models/auth/auth_view_model.dart';
 import '../../widgets/common/progress_dialog.dart';
 
@@ -79,10 +80,7 @@ class _AuthPageState extends State<AuthPage> {
                     onPressed: _loginUser,
                     child: Text(
                       AppStrings.login.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: AppTheme.buttonTextStyle,
                     ),
                   ),
                 ),

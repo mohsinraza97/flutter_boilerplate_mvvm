@@ -12,6 +12,11 @@ class AppTheme {
   static const Color _lightBackgroundColor = Colors.white;
   static const Color _errorColor = Color(0xFFFF3333);
 
+  static const TextStyle buttonTextStyle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
+
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     colorScheme: const ColorScheme.light(
