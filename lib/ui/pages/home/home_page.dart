@@ -43,12 +43,8 @@ class HomePage extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.all(24),
                   width: constraints.maxWidth,
-                  height: 60,
                   child: RaisedButton(
                     onPressed: () => _logoutUser(authVM, context),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
                     color: Theme.of(context).colorScheme.error,
                     textColor: Colors.white,
                     child: Text(

@@ -42,11 +42,8 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  Future<bool> _onBackPressed() {
-    if (_authVM?.isLoading ?? false) {
-      return Future.value(false);
-    }
-    return Future.value(true);
+  Future<bool> _onBackPressed() async {
+    return _authVM?.isLoading == false;
   }
 
   AppBar _buildAppBar() {
@@ -78,14 +75,8 @@ class _AuthPageState extends State<AuthPage> {
                 Container(
                   margin: const EdgeInsets.all(24),
                   width: constraints.maxWidth,
-                  height: 60,
                   child: RaisedButton(
                     onPressed: _loginUser,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                    color: Theme.of(context).colorScheme.primary,
-                    textColor: Theme.of(context).primaryTextTheme.button?.color,
                     child: Text(
                       AppStrings.login.toUpperCase(),
                       style: const TextStyle(

@@ -8,30 +8,32 @@ class AppTheme {
   const AppTheme._internal();
 
   static const Color _lightPrimaryColor = Color(0xE60188C0);
-  static const Color _lightPrimaryVariantColor = Color(0xE60188C0);
   static const Color _lightSecondaryColor = Color(0xFF8B8989);
-  static const Color _lightBackgroundColor = Color(0xFFE5E5E5);
-  static const Color _lightOnPrimaryColor = Colors.black;
-  static const Color _iconColor = Colors.white;
+  static const Color _lightBackgroundColor = Colors.white;
+  static const Color _errorColor = Color(0xFFFF3333);
 
   static final ThemeData lightTheme = ThemeData(
-    appBarTheme: AppBarTheme(
-      titleTextStyle: GoogleFonts.lato(
-        color: Colors.white,
-        fontSize: 20,
-      ),
-      color: _lightPrimaryVariantColor,
-      iconTheme: const IconThemeData(color: _iconColor),
-      systemOverlayStyle: SystemUiOverlayStyle.light,
-    ),
-    backgroundColor: _lightBackgroundColor,
-    iconTheme: const IconThemeData(color: _iconColor),
-    snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
+    brightness: Brightness.light,
     colorScheme: const ColorScheme.light(
       primary: _lightPrimaryColor,
       secondary: _lightSecondaryColor,
-      onPrimary: _lightOnPrimaryColor,
+      error: _errorColor,
+    ),
+    appBarTheme: const AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle.light,
+    ),
+    buttonTheme: ButtonThemeData(
+      textTheme: ButtonTextTheme.primary,
+      height: 48,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(32),
+      ),
+      buttonColor: _lightPrimaryColor,
     ),
     textTheme: GoogleFonts.latoTextTheme(),
+    iconTheme: const IconThemeData(color: _lightPrimaryColor),
+    snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
+    backgroundColor: _lightBackgroundColor,
+    scaffoldBackgroundColor: _lightBackgroundColor,
   );
 }
