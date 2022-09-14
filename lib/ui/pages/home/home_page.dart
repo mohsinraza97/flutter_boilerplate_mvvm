@@ -5,6 +5,7 @@ import '../../../util/constants/route_constants.dart';
 import '../../../util/utilities/common_utils.dart';
 import '../../../util/utilities/navigation_utils.dart';
 import '../../resources/app_strings.dart';
+import '../../resources/app_theme.dart';
 import '../../view_models/auth/auth_view_model.dart';
 import '../../widgets/common/progress_dialog.dart';
 
@@ -49,10 +50,7 @@ class HomePage extends StatelessWidget {
                     textColor: Colors.white,
                     child: Text(
                       AppStrings.logout.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: AppTheme.buttonTextStyle,
                     ),
                   ),
                 ),

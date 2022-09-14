@@ -34,4 +34,18 @@ class CommonUtils {
   static void removeCurrentFocus(BuildContext context) {
     FocusManager.instance.primaryFocus?.unfocus();
   }
+
+  static Widget getFlatButton(
+    String text, {
+    Color? color,
+    VoidCallback? onPressed,
+  }) {
+    return FlatButton(
+      textColor: color,
+      height: 36,
+      minWidth: 88,
+      onPressed: onPressed,
+      child: Text(text.toUpperCase()),
+    );
+  }
 }

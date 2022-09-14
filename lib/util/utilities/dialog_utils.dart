@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../ui/resources/app_strings.dart';
+import 'common_utils.dart';
 import 'navigation_utils.dart';
 
 class DialogUtils {
@@ -111,9 +112,9 @@ class DialogUtils {
     VoidCallback? callback,
   ) {
     if (text != null) {
-      return FlatButton(
-        textColor: Theme.of(context).colorScheme.secondary,
-        child: Text(text.toUpperCase()),
+      return CommonUtils.getFlatButton(
+        text,
+        color: Theme.of(context).colorScheme.secondary,
         onPressed: () {
           NavigationUtils.pop(context, result: false);
           if (callback != null) {
@@ -130,9 +131,9 @@ class DialogUtils {
     String text,
     VoidCallback? callback,
   ) {
-    return FlatButton(
-      textColor: Theme.of(context).colorScheme.primary,
-      child: Text(text.toUpperCase()),
+    return CommonUtils.getFlatButton(
+      text,
+      color: Theme.of(context).colorScheme.primary,
       onPressed: () {
         NavigationUtils.pop(context, result: true);
         if (callback != null) {
