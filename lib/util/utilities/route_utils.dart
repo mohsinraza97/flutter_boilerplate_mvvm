@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
 import '../../data/models/entities/user.dart';
 import '../../data/models/ui/page_arguments.dart';
@@ -29,28 +28,22 @@ class RouteUtils {
     } else if (route == RouteConstants.auth) {
       return _getPageRoute(
         const AuthPage(),
-        transitionType: args?.transitionType,
       );
     } else if (route == RouteConstants.home) {
       final user = args?.data as User?;
       return _getPageRoute(
         const HomePage(),
-        transitionType: args?.transitionType,
       );
     }
     return null;
   }
 
-  static PageTransition<dynamic> _getPageRoute(
-    Widget page, {
-    PageTransitionType? transitionType,
-    RouteSettings? settings,
-  }) {
-    // If null, set a default transition
-    transitionType ??= PageTransitionType.theme;
-    return PageTransition(
-      type: transitionType,
-      child: page,
+  static MaterialPageRoute _getPageRoute(
+      Widget page, {
+        RouteSettings? settings,
+      }) {
+    return MaterialPageRoute(
+      builder: (ctx) => page,
       settings: settings,
     );
   }

@@ -7,23 +7,32 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   const AppTheme._internal();
 
-  static const Color _lightPrimaryColor = Color(0xE60188C0);
-  static const Color _lightSecondaryColor = Color(0xFF8B8989);
-  static const Color _lightBackgroundColor = Colors.white;
-  static const Color _errorColor = Color(0xFFFF3333);
+  // {
+  //     FontWeight.w100: 'Thin',
+  //     FontWeight.w200: 'ExtraLight',
+  //     FontWeight.w300: 'Light',
+  //     FontWeight.w400: 'Regular',
+  //     FontWeight.w500: 'Medium',
+  //     FontWeight.w600: 'SemiBold',
+  //     FontWeight.w700: 'Bold',
+  //     FontWeight.w800: 'ExtraBold',
+  //     FontWeight.w900: 'Black',
+  // }
 
-  static const TextStyle buttonTextStyle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-  );
+  static const Color lightPrimaryColor = Color(0xE60188C0);
+  static const Color lightSecondaryColor = Color(0xFF8B8989);
+  static const Color lightBackgroundColor = Colors.white;
+  static const Color errorColor = Color(0xFFFF3333);
+  static const Color dividerColor = Color(0xFFE6E8E7);
 
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     colorScheme: const ColorScheme.light(
-      primary: _lightPrimaryColor,
-      secondary: _lightSecondaryColor,
-      error: _errorColor,
+      primary: lightPrimaryColor,
+      secondary: lightSecondaryColor,
+      error: errorColor,
     ),
+    dividerColor: dividerColor,
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle.light,
     ),
@@ -33,12 +42,15 @@ class AppTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(32),
       ),
-      buttonColor: _lightPrimaryColor,
+      buttonColor: lightPrimaryColor,
     ),
     textTheme: GoogleFonts.latoTextTheme(),
-    iconTheme: const IconThemeData(color: _lightPrimaryColor),
+    iconTheme: const IconThemeData(color: lightPrimaryColor),
     snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
-    backgroundColor: _lightBackgroundColor,
-    scaffoldBackgroundColor: _lightBackgroundColor,
+    backgroundColor: lightBackgroundColor,
+    scaffoldBackgroundColor: lightBackgroundColor,
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: lightBackgroundColor,
+    ),
   );
 }

@@ -3,9 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../../../util/constants/route_constants.dart';
-import '../../../util/utilities/image_utils.dart';
 import '../../../util/utilities/navigation_utils.dart';
-import '../../resources/app_assets.dart';
 import '../../view_models/auth/auth_view_model.dart';
 
 class SplashPage extends StatefulWidget {
@@ -44,7 +42,7 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _loadUser() async {
     final user = await _authVM?.getAuthUser();
-    Future.delayed(const Duration(seconds: 3)).then((value) {
+    Future.delayed(const Duration(seconds: 2)).then((value) {
       NavigationUtils.replace(
         context,
         user != null ? RouteConstants.home : RouteConstants.auth,

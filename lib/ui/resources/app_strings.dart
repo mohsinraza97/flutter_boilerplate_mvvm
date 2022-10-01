@@ -13,7 +13,7 @@ class AppStrings {
   static const String error = 'Error';
   static const String errorGeneral = 'Something went wrong, please try again.';
   static const String errorUnauthorized = 'Your session has been expired. Please re-login to continue using the app.';
-  static const String errorTimeout = 'We\'re currently experiencing technical issues, please try later.';
+  static const String errorTimeout = 'We\'re currently experiencing technical issues, please try again.';
   static const String errorInternetUnavailable = 'Please check your internet connection and try again.';
   static const String errorUnknown = 'An unknown error has occurred, please try again.';
 

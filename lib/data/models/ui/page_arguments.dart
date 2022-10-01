@@ -1,34 +1,32 @@
-import 'package:enum_to_string/enum_to_string.dart';
-import 'package:page_transition/page_transition.dart';
-
 import '../base_model.dart';
 
 class PageArguments implements BaseModel {
-  PageTransitionType? transitionType;
   dynamic data;
 
   PageArguments({
-    this.transitionType,
     this.data,
   });
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'Transition': _getTransition(),
-      'Data': _getData(),
-    };
-  }
-
-  String? _getTransition() {
-    return transitionType != null
-        ? EnumToString.convertToString(transitionType)
-        : null;
+    return {'Data': _getData()};
   }
 
   dynamic _getData() {
     if (data is BaseModel) {
-      return (data as BaseModel).toJson();
+      return '$data=${(data as BaseModel).toJson()}';
+    }
+    if (data is Map<String, dynamic>) {
+      final map = data as Map<String, dynamic>?;
+      return map?.entries.map((entry) {
+        if (entry.value is BaseModel) {
+          return '${entry.key}=${(entry.value as BaseModel).toJson()}';
+        } else if (entry.value is List<BaseModel>) {
+          return '${entry.key}=${(entry.value as List<BaseModel>).map((x) => x.toJson()).toList()}';
+        } else {
+          return '${entry.key}=${entry.value}';
+        }
+      });
     }
     return data;
   }

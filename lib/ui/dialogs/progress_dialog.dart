@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import '../../resources/app_strings.dart';
+import '../resources/app_strings.dart';
 
 class ProgressDialog extends StatelessWidget {
   final bool visible;
@@ -25,9 +26,9 @@ class ProgressDialog extends StatelessWidget {
         return true;
       },
       child: LayoutBuilder(builder: (
-        BuildContext context,
-        BoxConstraints constraints,
-      ) {
+          BuildContext context,
+          BoxConstraints constraints,
+          ) {
         return Visibility(
           visible: visible,
           child: Container(
@@ -91,7 +92,7 @@ class ProgressDialog extends StatelessWidget {
         child: Text(
           message ?? '',
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 16),
+          style: GoogleFonts.lato(fontSize: 16),
         ),
       ),
     );

@@ -1,6 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+
 import '../../../ui/resources/app_strings.dart';
 import '../../../util/extensions/numeric_ext.dart';
 import '../../../util/utilities/json_utils.dart';
+import '../../../util/utilities/log_utils.dart';
+import '../../enums/response_code.dart';
 import '../base_model.dart';
 
 class Result<T> implements BaseModel {
@@ -35,12 +40,12 @@ class Result<T> implements BaseModel {
 
   factory Result.parse(
     String body,
-    int code,
+    int? code,
     Function(dynamic data) callback,
   ) {
     final json = JsonUtils.fromJson(body);
     if (json == null) {
-      return Result.error();
+      return Result.fromError();
     }
     return Result<T>._internal(
       code: code,
@@ -48,6 +53,26 @@ class Result<T> implements BaseModel {
       message: json['message'],
       data: callback(json['data']),
     );
+  }
+
+  factory Result.fromError([Object? e]) {
+    LogUtils.error('API Error: $e');
+    if (e is TimeoutException) {
+      return Result.error(
+        AppStrings.errorTimeout,
+        ResponseCode.timeout.value,
+      );
+    } else if (e is SocketException) {
+      return Result.error(
+        AppStrings.errorInternetUnavailable,
+        ResponseCode.internetFailure.value,
+      );
+    } else {
+      return Result.error(
+        AppStrings.errorUnknown,
+        ResponseCode.unknown.value,
+      );
+    }
   }
 
   @override

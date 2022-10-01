@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/network/requests/auth_request.dart';
@@ -6,10 +7,10 @@ import '../../../data/models/ui/page_arguments.dart';
 import '../../../util/constants/route_constants.dart';
 import '../../../util/utilities/dialog_utils.dart';
 import '../../../util/utilities/navigation_utils.dart';
+import '../../../util/utilities/widget_utils.dart';
+import '../../dialogs/progress_dialog.dart';
 import '../../resources/app_strings.dart';
-import '../../resources/app_theme.dart';
 import '../../view_models/auth/auth_view_model.dart';
-import '../../widgets/common/progress_dialog.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -66,7 +67,7 @@ class _AuthPageState extends State<AuthPage> {
                     margin: const EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
                       '${_getAuthRequest().toJson()}',
-                      style: const TextStyle(
+                      style: GoogleFonts.lato(
                         fontSize: 24,
                         color: Colors.black54,
                       ),
@@ -76,12 +77,9 @@ class _AuthPageState extends State<AuthPage> {
                 Container(
                   margin: const EdgeInsets.all(24),
                   width: constraints.maxWidth,
-                  child: RaisedButton(
+                  child: WidgetUtils.getRaisedButton(
+                    AppStrings.login.toUpperCase(),
                     onPressed: _loginUser,
-                    child: Text(
-                      AppStrings.login.toUpperCase(),
-                      style: AppTheme.buttonTextStyle,
-                    ),
                   ),
                 ),
               ],

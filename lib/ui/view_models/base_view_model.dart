@@ -1,28 +1,42 @@
 import 'package:flutter/material.dart';
 
-import '../../data/enums/data_state.dart';
+import '../../data/enums/ui_state.dart';
 import '../../data/enums/loading_state.dart';
 
 abstract class BaseViewModel with ChangeNotifier {
-  DataState _dataState = DataState.none;
+  UiState _uiState = UiState.none;
   LoadingState _loadingState = LoadingState.loaded;
+  String? _displayMessage;
 
-  DataState get dataState => _dataState;
+  UiState get uiState => _uiState;
+  bool get isLoading => _loadingState == LoadingState.loading;
+  String? get displayMessage => _displayMessage;
 
-  set dataState(DataState state) {
-    _dataState = state;
+  bool get isStateValid => _uiState == UiState.valid;
+  bool get isStateNotValid => !isStateValid && _uiState != UiState.none;
+
+  @protected
+  set uiState(UiState state) {
+    _uiState = state;
     notifyListeners();
   }
 
-  bool get isLoading => _loadingState == LoadingState.loading;
-
   @protected
   void toggleLoading(bool loading) {
-    if (loading) {
-      _loadingState = LoadingState.loading;
-    } else {
-      _loadingState = LoadingState.loaded;
-    }
+    _loadingState = loading ? LoadingState.loading : LoadingState.loaded;
+    notifyListeners();
+  }
+
+  @protected
+  set displayMessage(String? message) {
+    _displayMessage = message;
+    notifyListeners();
+  }
+
+  @protected
+  void resetObservers() {
+    displayMessage = null;
+    uiState = UiState.none;
     notifyListeners();
   }
 }

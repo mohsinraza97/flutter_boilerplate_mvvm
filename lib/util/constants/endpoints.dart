@@ -1,5 +1,5 @@
-class NetworkConstants {
-  const NetworkConstants._internal();
+class Endpoints {
+  const Endpoints._internal();
 
   static const String baseUrl = 'https://mohsinraza10p-task-manager.herokuapp.com/';
 

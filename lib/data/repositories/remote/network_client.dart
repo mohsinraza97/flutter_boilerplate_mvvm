@@ -1,15 +1,14 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../ui/resources/app_strings.dart';
-import '../../../util/constants/network_constants.dart';
+import '../../../util/constants/app_constants.dart';
+import '../../../util/constants/endpoints.dart';
 import '../../../util/utilities/json_utils.dart';
 import '../../../util/utilities/log_utils.dart';
 import '../../enums/request_type.dart';
-import '../../enums/response_code.dart';
 
 class NetworkClient {
   const NetworkClient._internal();
@@ -25,13 +24,13 @@ class NetworkClient {
     Map<String, dynamic>? params,
     dynamic body,
   }) async {
-    Exception? exception;
     http.Response? response;
     final uri = _getRequestUri(endpoint, params);
 
     try {
       final headers = _getHeaders(token);
       body = JsonUtils.toJson(body);
+      const timeLimit = Duration(seconds: AppConstants.apiTimeout);
 
       // Log request
       _logRequest(
@@ -43,51 +42,43 @@ class NetworkClient {
 
       // Initiate http request
       if (requestType == RequestType.get) {
-        response = await http.get(uri, headers: headers);
+        response = await http
+            .get(uri, headers: headers)
+            .timeout(timeLimit, onTimeout: _timeoutCallback);
       } else if (requestType == RequestType.post) {
-        response = await http.post(uri, headers: headers, body: body);
+        response = await http
+            .post(uri, headers: headers, body: body)
+            .timeout(timeLimit, onTimeout: _timeoutCallback);
       } else if (requestType == RequestType.put) {
-        response = await http.put(uri, headers: headers, body: body);
+        response = await http
+            .put(uri, headers: headers, body: body)
+            .timeout(timeLimit, onTimeout: _timeoutCallback);
       } else if (requestType == RequestType.patch) {
-        response = await http.patch(uri, headers: headers, body: body);
+        response = await http
+            .patch(uri, headers: headers, body: body)
+            .timeout(timeLimit, onTimeout: _timeoutCallback);
       } else if (requestType == RequestType.delete) {
-        response = await http.delete(uri, headers: headers, body: body);
+        response = await http
+            .delete(uri, headers: headers, body: body)
+            .timeout(timeLimit, onTimeout: _timeoutCallback);
       }
-    } on TimeoutException catch (e) {
-      // Connection timeout
-      exception = e;
-      response = http.Response(
-        AppStrings.errorTimeout,
-        ResponseCode.timeout.value,
-      );
-    } on SocketException catch (e) {
-      // Internet unavailable
-      exception = e;
-      response = http.Response(
-        AppStrings.errorInternetUnavailable,
-        ResponseCode.internetFailure.value,
-      );
-    } on Exception catch (e) {
-      // Unknown
-      exception = e;
-      response = http.Response(
-        AppStrings.errorUnknown,
-        ResponseCode.unknown.value,
-      );
+    } catch (e) {
+      _logResponse(uri, exception: e);
+      rethrow;
     }
 
     // Log response
-    _logResponse(
-      uri,
-      response: response,
-      exception: exception,
-    );
+    _logResponse(uri, response: response);
 
     return response;
   }
 
+  FutureOr<http.Response> _timeoutCallback() {
+    throw TimeoutException(AppStrings.errorTimeout);
+  }
+
   Uri _getRequestUri(String endpoint, Map<String, dynamic>? params) {
-    final requestUrl = '${NetworkConstants.baseUrl}$endpoint';
+    final requestUrl = '${Endpoints.baseUrl}$endpoint';
     return Uri.parse(requestUrl).replace(queryParameters: params);
   }
 
@@ -121,16 +112,20 @@ class NetworkClient {
   void _logResponse(
     Uri uri, {
     http.Response? response,
-    Exception? exception,
+    dynamic exception,
   }) {
     final responseMap = <String, dynamic>{};
     responseMap['URL'] = uri.toString();
-    responseMap['Response'] = {
-      'status': '${response?.statusCode} - ${response?.reasonPhrase}',
-      'body': response?.body,
-    };
+    if (response != null) {
+      responseMap['Response'] = {
+        'status': '${response.statusCode} - ${response.reasonPhrase}',
+        'body': response.body,
+      };
+    }
     if (exception != null) {
       responseMap['Exception'] = exception.toString();
+      LogUtils.error(responseMap);
+      return;
     }
     LogUtils.info(responseMap);
   }

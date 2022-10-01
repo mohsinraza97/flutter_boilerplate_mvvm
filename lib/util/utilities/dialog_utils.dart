@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../../ui/resources/app_strings.dart';
-import 'common_utils.dart';
 import 'navigation_utils.dart';
+import 'widget_utils.dart';
 
 class DialogUtils {
   const DialogUtils._internal();
@@ -34,6 +36,27 @@ class DialogUtils {
             primaryButtonText: primaryButtonText,
             primaryButtonCallback: primaryButtonCallback,
           ),
+        );
+      },
+    );
+  }
+
+  static Future<T?> showCustomDialog<T>(
+    BuildContext context, {
+    required Widget content,
+    bool? dismissible = true,
+  }) {
+    return showDialog(
+      context: context,
+      barrierDismissible: dismissible ?? true,
+      builder: (dialogContext) {
+        return AlertDialog(
+          scrollable: true,
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 24,
+          ),
+          content: content,
         );
       },
     );
@@ -91,8 +114,8 @@ class DialogUtils {
     if (title != null) {
       return Text(
         title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
+        style: GoogleFonts.lato(
+          fontWeight: FontWeight.w600,
         ),
       );
     }
@@ -101,7 +124,12 @@ class DialogUtils {
 
   static Widget? _buildMessage(String? message) {
     if (message != null) {
-      return SingleChildScrollView(child: Text(message));
+      return SingleChildScrollView(
+        child: Text(
+          message,
+          style: GoogleFonts.lato(),
+        ),
+      );
     }
     return null;
   }
@@ -112,7 +140,7 @@ class DialogUtils {
     VoidCallback? callback,
   ) {
     if (text != null) {
-      return CommonUtils.getFlatButton(
+      return WidgetUtils.getFlatButton(
         text,
         color: Theme.of(context).colorScheme.secondary,
         onPressed: () {
@@ -131,7 +159,7 @@ class DialogUtils {
     String text,
     VoidCallback? callback,
   ) {
-    return CommonUtils.getFlatButton(
+    return WidgetUtils.getFlatButton(
       text,
       color: Theme.of(context).colorScheme.primary,
       onPressed: () {

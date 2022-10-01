@@ -1,10 +1,12 @@
 import '../../../util/utilities/datetime_utils.dart';
-import '../base_model.dart';
+import '../base_entity.dart';
 
-class User implements BaseModel {
+class User extends BaseEntity {
+  @override
   final String? id;
   final String? name;
   final String? email;
+  @override
   final DateTime? createdAt;
 
   User({
@@ -12,7 +14,7 @@ class User implements BaseModel {
     this.name,
     this.email,
     this.createdAt,
-  });
+  }) : super(id: id, createdAt: createdAt);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -25,11 +27,9 @@ class User implements BaseModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      '_id': id,
-      'name': name,
-      'email': email,
-      'createdAt': createdAt?.toIso8601String(),
-    };
+    final json = super.toJson();
+    json['name'] = name;
+    json['email'] = email;
+    return json;
   }
 }

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../util/constants/route_constants.dart';
 import '../../../util/utilities/common_utils.dart';
 import '../../../util/utilities/navigation_utils.dart';
+import '../../../util/utilities/widget_utils.dart';
 import '../../resources/app_strings.dart';
-import '../../resources/app_theme.dart';
 import '../../view_models/auth/auth_view_model.dart';
-import '../../widgets/common/progress_dialog.dart';
+import '../../dialogs/progress_dialog.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class HomePage extends StatelessWidget {
                 Center(
                   child: Text(
                     'Welcome ${authVM.user?.name ?? ''}!',
-                    style: const TextStyle(
+                    style: GoogleFonts.lato(
                       fontSize: 24,
                       color: Colors.black54,
                     ),
@@ -44,14 +45,10 @@ class HomePage extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.all(24),
                   width: constraints.maxWidth,
-                  child: RaisedButton(
+                  child: WidgetUtils.getRaisedButton(
+                    AppStrings.logout.toUpperCase(),
                     onPressed: () => _logoutUser(authVM, context),
                     color: Theme.of(context).colorScheme.error,
-                    textColor: Colors.white,
-                    child: Text(
-                      AppStrings.logout.toUpperCase(),
-                      style: AppTheme.buttonTextStyle,
-                    ),
                   ),
                 ),
               ],

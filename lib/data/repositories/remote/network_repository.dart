@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 
-import '../../../util/constants/network_constants.dart';
+import '../../../util/constants/endpoints.dart';
 import '../../../util/extensions/http_ext.dart';
 import '../../enums/request_type.dart';
 import '../../models/network/requests/auth_request.dart';
@@ -18,22 +18,30 @@ abstract class NetworkRepository {
 class NetworkRepositoryImpl extends BaseRepositoryImpl implements NetworkRepository {
   @override
   Future<Result<AuthResponse>> register(RegisterRequest? request) async {
-    final response = await NetworkClient.instance.request(
-      RequestType.post,
-      endpoint: NetworkConstants.register,
-      body: request?.toJson(),
-    );
-    return _handleAuthResult(response);
+    try {
+      final response = await NetworkClient.instance.request(
+        RequestType.post,
+        endpoint: Endpoints.register,
+        body: request?.toJson(),
+      );
+      return _handleAuthResult(response);
+    } catch (e) {
+      return Result.fromError(e);
+    }
   }
 
   @override
   Future<Result<AuthResponse>> login(AuthRequest? request) async {
-    final response = await NetworkClient.instance.request(
-      RequestType.post,
-      endpoint: NetworkConstants.login,
-      body: request?.toJson(),
-    );
-    return _handleAuthResult(response);
+    try {
+      final response = await NetworkClient.instance.request(
+        RequestType.post,
+        endpoint: Endpoints.login,
+        body: request?.toJson(),
+      );
+      return _handleAuthResult(response);
+    } catch (e) {
+      return Result.fromError(e);
+    }
   }
 
   Result<AuthResponse> _handleAuthResult(http.Response? response) {
