@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 
+import 'data/managers/notification_manager.dart';
 import 'di/injector.dart';
 import 'ui/resources/app_strings.dart';
 import 'ui/resources/app_theme.dart';
@@ -13,7 +15,10 @@ import 'util/constants/route_constants.dart';
 import 'util/utilities/log_utils.dart';
 import 'util/utilities/route_utils.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  NotificationManager().init();
   setupDI();
   LogUtils.init();
 
