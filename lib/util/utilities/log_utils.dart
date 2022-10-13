@@ -3,23 +3,23 @@ import 'package:logger/logger.dart';
 class LogUtils {
   const LogUtils._internal();
 
-  static Logger? logger;
+  static Logger? _logger;
 
   static void init() {
-    logger = Logger(
+    _logger = Logger(
       printer: PrettyPrinter(printTime: true),
     );
   }
 
   static void debug(dynamic message) {
-    logger?.d(message);
+    _logger?.d(message);
   }
 
   static void info(dynamic message) {
-    logger?.i(message);
+    _logger?.i(message);
   }
 
   static void error(dynamic message) {
-    logger?.e(message);
+    _logger?.e(message);
   }
 }

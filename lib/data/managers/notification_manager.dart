@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_boilerplate_mvvm/ui/resources/app_theme.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../util/utilities/log_utils.dart';
@@ -38,12 +38,11 @@ class NotificationManager {
 
   bool _initialized = false;
 
-  Future<void> init() async {
+  Future<void> init(BuildContext context) async {
     try {
       if (!_initialized) {
         _initLocalNotifications();
         _initPermissions();
-
         _handleEvents();
 
         _initialized = true;
@@ -75,6 +74,10 @@ class NotificationManager {
 
   Future<void> cancelAll() async {
     await _localNotificationPlugin.cancelAll();
+  }
+
+  Future<String?> getFcmToken() {
+    return _firebaseMessaging.getToken();
   }
 
   Future<void> onNotificationReceived(
@@ -127,19 +130,20 @@ class NotificationManager {
   }
 
   Future<void> _initPermissions() async {
-    await _firebaseMessaging.requestPermission();
+    final settings = await _firebaseMessaging.requestPermission();
+    LogUtils.info('Notification Permission: ${settings.authorizationStatus.name}');
   }
 
   Future<void> _handleEvents() async {
-    final settings = await _firebaseMessaging.getNotificationSettings();
-    LogUtils.info('Notification Permission: ${settings.authorizationStatus.name}');
-    if (settings.authorizationStatus != AuthorizationStatus.authorized) {
-      return;
-    }
+    LogUtils.info('FCM events initialization started!');
 
-    // FCM Token
-    final fcmToken = await _firebaseMessaging.getToken();
-    LogUtils.info('FCM Token: $fcmToken');
+    // https://firebase.google.com/docs/cloud-messaging/flutter/client
+    // FCM Token Refresh
+    FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
+      LogUtils.info('FCM refresh token: $token');
+    }).onError((e) {
+      LogUtils.error('Error fetching FCM refresh token: $e');
+    });
 
     // Foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -173,15 +177,13 @@ class NotificationManager {
   }
 
   AndroidNotificationDetails _getAndroidNotificationDetails() {
-    const channelId = '10pu_notifications';
+    const channelId = 'flutter_boilerplate_notifications';
     const channelName = 'General Notifications';
     return const AndroidNotificationDetails(
       channelId,
       channelName,
-      color: AppTheme.lightPrimaryColor,
       importance: Importance.high,
       priority: Priority.high,
-      // largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
     );
   }
 }

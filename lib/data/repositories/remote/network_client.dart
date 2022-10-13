@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../../ui/resources/app_strings.dart';
 import '../../../util/constants/app_constants.dart';
 import '../../../util/constants/endpoints.dart';
+import '../../../util/extensions/numeric_ext.dart';
 import '../../../util/utilities/json_utils.dart';
 import '../../../util/utilities/log_utils.dart';
 import '../../enums/request_type.dart';
@@ -29,7 +30,7 @@ class NetworkClient {
 
     try {
       final headers = _getHeaders(token);
-      body = JsonUtils.toJson(body);
+      final payload = JsonUtils.toJson(body);
       const timeLimit = Duration(seconds: AppConstants.apiTimeout);
 
       // Log request
@@ -47,27 +48,28 @@ class NetworkClient {
             .timeout(timeLimit, onTimeout: _timeoutCallback);
       } else if (requestType == RequestType.post) {
         response = await http
-            .post(uri, headers: headers, body: body)
+            .post(uri, headers: headers, body: payload)
             .timeout(timeLimit, onTimeout: _timeoutCallback);
       } else if (requestType == RequestType.put) {
         response = await http
-            .put(uri, headers: headers, body: body)
+            .put(uri, headers: headers, body: payload)
             .timeout(timeLimit, onTimeout: _timeoutCallback);
       } else if (requestType == RequestType.patch) {
         response = await http
-            .patch(uri, headers: headers, body: body)
+            .patch(uri, headers: headers, body: payload)
             .timeout(timeLimit, onTimeout: _timeoutCallback);
       } else if (requestType == RequestType.delete) {
         response = await http
-            .delete(uri, headers: headers, body: body)
+            .delete(uri, headers: headers, body: payload)
             .timeout(timeLimit, onTimeout: _timeoutCallback);
       }
     } catch (e) {
+      // Log error response
       _logResponse(uri, exception: e);
       rethrow;
     }
 
-    // Log response
+    // Log success response
     _logResponse(uri, response: response);
 
     return response;
@@ -119,7 +121,7 @@ class NetworkClient {
     if (response != null) {
       responseMap['Response'] = {
         'status': '${response.statusCode} - ${response.reasonPhrase}',
-        'body': response.body,
+        'body': JsonUtils.fromJson(response.body),
       };
     }
     if (exception != null) {
@@ -127,6 +129,10 @@ class NetworkClient {
       LogUtils.error(responseMap);
       return;
     }
-    LogUtils.info(responseMap);
+    if (response?.statusCode.isBetween(200, 299) == true) {
+      LogUtils.info(responseMap);
+    } else {
+      LogUtils.error(responseMap);
+    }
   }
 }

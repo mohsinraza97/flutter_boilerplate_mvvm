@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/managers/notification_manager.dart';
 import '../../../util/constants/route_constants.dart';
 import '../../../util/utilities/navigation_utils.dart';
 import '../../view_models/auth/auth_view_model.dart';
@@ -22,7 +23,7 @@ class _SplashPageState extends State<SplashPage> {
       _authVM = Provider.of<AuthViewModel>(context, listen: false);
       _loadUser();
     });
-
+    _init();
     super.initState();
   }
 
@@ -38,6 +39,13 @@ class _SplashPageState extends State<SplashPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _init() async {
+    if (!mounted) {
+      return;
+    }
+    await NotificationManager().init(context);
   }
 
   Future<void> _loadUser() async {
