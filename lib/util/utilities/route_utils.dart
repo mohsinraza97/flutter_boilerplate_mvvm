@@ -21,27 +21,20 @@ class RouteUtils {
     LogUtils.debug('Route[name=$route, Args=${args?.toJson()}]');
 
     if (route == RouteConstants.index) {
-      // Initial route doesn't requires transition
-      return MaterialPageRoute(
-        builder: (ctx) => const SplashPage(),
-      );
+      return _getPageRoute(const SplashPage());
     } else if (route == RouteConstants.auth) {
-      return _getPageRoute(
-        const AuthPage(),
-      );
+      return _getPageRoute(const AuthPage());
     } else if (route == RouteConstants.home) {
       final user = args?.data as User?;
-      return _getPageRoute(
-        const HomePage(),
-      );
+      return _getPageRoute(const HomePage());
     }
     return null;
   }
 
   static MaterialPageRoute _getPageRoute(
-      Widget page, {
-        RouteSettings? settings,
-      }) {
+    Widget page, {
+    RouteSettings? settings,
+  }) {
     return MaterialPageRoute(
       builder: (ctx) => page,
       settings: settings,

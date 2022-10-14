@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../ui/resources/app_strings.dart';
+import 'navigation_utils.dart';
 
 class CommonUtils {
   const CommonUtils._internal();
@@ -33,5 +34,17 @@ class CommonUtils {
 
   static void removeCurrentFocus(BuildContext context) {
     FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  static Future<bool> onBackPressed(
+    BuildContext context,
+    bool? isLoading, {
+    Object? result,
+  }) async {
+    if (isLoading == true) {
+      return false;
+    }
+    NavigationUtils.pop(context, result: result);
+    return true;
   }
 }
