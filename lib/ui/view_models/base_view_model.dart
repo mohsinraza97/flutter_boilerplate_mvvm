@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../data/enums/ui_state.dart';
-import '../../data/enums/loading_state.dart';
 
 abstract class BaseViewModel with ChangeNotifier {
   UiState _uiState = UiState.none;
-  LoadingState _loadingState = LoadingState.loaded;
+  bool _loading = false;
   String? _displayMessage;
 
   UiState get uiState => _uiState;
-  bool get isLoading => _loadingState == LoadingState.loading;
+  bool get isLoading => _loading;
   String? get displayMessage => _displayMessage;
 
   bool get isStateValid => _uiState == UiState.valid;
@@ -23,7 +22,7 @@ abstract class BaseViewModel with ChangeNotifier {
 
   @protected
   void toggleLoading(bool loading) {
-    _loadingState = loading ? LoadingState.loading : LoadingState.loaded;
+    _loading = loading;
     notifyListeners();
   }
 
@@ -35,8 +34,9 @@ abstract class BaseViewModel with ChangeNotifier {
 
   @protected
   void resetObservers() {
-    displayMessage = null;
-    uiState = UiState.none;
+    _uiState = UiState.none;
+    _loading = false;
+    _displayMessage = null;
     notifyListeners();
   }
 }

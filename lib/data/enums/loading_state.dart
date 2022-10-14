@@ -1,4 +1,0 @@
-enum LoadingState {
-  loading,
-  loaded,
-}
