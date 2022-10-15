@@ -9,7 +9,7 @@ extension HttpExtension on http.Response? {
     try {
       Result<T> result = Result.parse(_getGenericResponse(body), code, (data) => callback(data));
       if (result.message?.isEmpty == true) {
-        result.message ??= '$code - ${this!.reasonPhrase}';
+        result.message = '$code - ${this!.reasonPhrase}';
       }
       return result;
     } catch (e) {
