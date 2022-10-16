@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../ui/resources/app_strings.dart';
+import 'log_utils.dart';
 import 'navigation_utils.dart';
 
 class CommonUtils {
@@ -42,9 +43,40 @@ class CommonUtils {
     return scaffoldKey?.currentState?.isDrawerOpen ?? false;
   }
 
-  static Future<String> getAppVersion() async {
+  static Future<String> getAppVersion({bool? withBuildNumber}) async {
     PackageInfo package = await PackageInfo.fromPlatform();
-    return '${package.version} (${package.buildNumber})';
+    if (withBuildNumber == true) {
+      return '${package.version} (${package.buildNumber})';
+    }
+    return package.version;
+  }
+
+  static void openDatePicker(
+    BuildContext context, {
+    required Function(DateTime?) onDateSelected,
+  }) async {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    ).then((value) {
+      LogUtils.info('Selected Date: $value');
+      onDateSelected(value);
+    });
+  }
+
+  static void openTimePicker(
+    BuildContext context, {
+    required Function(TimeOfDay?) onTimeSelected,
+  }) async {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    ).then((value) {
+      LogUtils.info('Selected TimePicker: $value');
+      onTimeSelected(value);
+    });
   }
 
   static Future<bool> onBackPressed(
