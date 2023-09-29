@@ -9,10 +9,11 @@ class WidgetUtils {
     Color? color,
     VoidCallback? onPressed,
   }) {
-    return FlatButton(
-      textColor: color,
-      height: 36,
-      minWidth: 88,
+    return TextButton(
+      style: TextButton.styleFrom(
+        foregroundColor: color,
+        minimumSize: const Size(88, 36),
+      ),
       onPressed: onPressed,
       child: Text(
         text.toUpperCase(),
@@ -27,10 +28,12 @@ class WidgetUtils {
     Color? textColor,
     VoidCallback? onPressed,
   }) {
-    return RaisedButton(
+    return ElevatedButton(
       onPressed: onPressed,
-      color: color,
-      textColor: textColor,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        foregroundColor: textColor,
+      ),
       child: Text(
         text,
         style: GoogleFonts.lato(
